@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestAll(t *testing.T) {
+func Test_List(t *testing.T) {
 	l := new(List)
 	n0 := &Node{data: 0}
 	n1 := &Node{data: 1}

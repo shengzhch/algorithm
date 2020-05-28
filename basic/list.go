@@ -8,6 +8,9 @@ type List struct {
 }
 
 func (l *List) Init(node *Node) {
+	if node == nil {
+		return
+	}
 	l.len = 1
 	l.head = node
 	l.tail = node
