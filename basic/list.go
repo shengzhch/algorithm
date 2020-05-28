@@ -37,6 +37,10 @@ func (l *List) SetTail(tail *Node) {
 
 //头插法
 func (l *List) InsertAsHead(node *Node) {
+	if l.len == 0 {
+		l.Init(node)
+		return
+	}
 	node.next = l.head
 	l.head.pre = node
 	l.head = node
@@ -48,6 +52,10 @@ func (l *List) InsertAsHead(node *Node) {
 
 //尾插法
 func (l *List) InsertAsTail(node *Node) {
+	if l.len == 0 {
+		l.Init(node)
+		return
+	}
 	node.pre = l.tail
 	l.tail.next = node
 	l.tail = node
@@ -78,6 +86,11 @@ func (l *List) InsertBefore(bf, node *Node) {
 
 //删除头
 func (l *List) DelHead() {
+	if l.len == 1 {
+		l.head, l.tail = nil, nil
+		l.len = 0
+		return
+	}
 	l.head = l.head.next
 	l.head.pre = nil
 	l.len--
@@ -85,6 +98,11 @@ func (l *List) DelHead() {
 
 //删除尾
 func (l *List) DelTail() {
+	if l.len == 1 {
+		l.head, l.tail = nil, nil
+		l.len = 0
+		return
+	}
 	l.tail = l.tail.pre
 	l.tail.next = nil
 	l.len--
@@ -144,7 +162,8 @@ func (l *List) Reverse() {
 	}
 }
 
-//作为单链表
+//作为单链表 不能用到pre指针
+
 func (l *List) ReverseAsSingle() {
 	var pre *Node
 	var next *Node
