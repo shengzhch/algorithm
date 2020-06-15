@@ -2,6 +2,7 @@ package basic
 
 import (
 	"math"
+	"math/rand"
 )
 
 //插入排序 稳定
@@ -195,6 +196,113 @@ func MgSort(data []interface{}, i, k int, cf CF) int {
 }
 
 //快速排序
-func QuickSort(data []interface{}, i, k int, cf CF) int {
+
+/*
+快速排序 解决一般问题的最佳排序算法 分治算法
+分 ： 设定一个分割值将数据分成两部分
+治 ： 分别在两部分用递归的方式继续使用快速排序算法
+合 ： 对分割部分排序直至完成
+*/
+
+func randInt() int {
+	return rand.Intn(2147483647)
+}
+
+//i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
+func Partition(data []interface{}, i, k int, cf CF) int {
+	if i == k {
+		return i
+	}
+	var pval interface{}
+
+	var r = make([]interface{}, 3, 3)
+
+	r[0] = (randInt() % (k - i + 1)) + i
+	r[1] = (randInt() % (k - i + 1)) + i
+	r[2] = (randInt() % (k - i + 1)) + i
+
+	InsertSort(r, CfInt)
+
+	//应该也可以随机取一个值，这样取值的目的是保证绝对随机。
+	pval = data[r[1].(int)] //取中位数的方法取出一个值作为哨兵
+
+	for {
+		//从右端开始向左搜索找到第一个小于或者等于哨兵的值
+		for (cf(data[k], pval) > 0) {
+			k--
+		}
+
+		//从左端开始向右搜索找到第一个大于或者等于哨兵的值
+		for (cf(data[i], pval) < 0) {
+			i++
+		}
+
+		//
+		if (i >= k) {
+			//则说明哨兵已经把数组分成大值和小值两组，
+			break
+		} else {
+			//肯定是data[i]大
+			if (cf(data[i], data[k]) != 0) {
+				data[i], data[k] = data[k], data[i]
+			} else {
+				//防止陷入死循环
+				del := k - i
+				if del == 1 {
+					//紧挨着
+					return i
+				} else {
+					pval = data[i+1]
+				}
+			}
+		}
+	}
+	return i
+}
+
+//成功返回0，失败返回-1；分区方法调用，确定左边递归调用，右边一直确定新的哨兵，直到i的值移到最后
+func QuickSort1(data []interface{}, i, k int, cf CF) int {
+	var j int
+	for (i < k) {
+		if j = Partition(data, i, k, cf); j < 0 {
+			return -1
+		}
+
+		if QuickSort1(data, i, j, cf) < 0 {
+			return -1
+		}
+		i = j + 1
+	}
 	return 0
 }
+
+//成功返回0，失败返回-1；分区方法调用
+func QuickSort2(data []interface{}, i, k int, cf CF) int {
+	if i >= k {
+		return 0
+	}
+	j := Partition(data, i, k, cf)
+
+	if QuickSort2(data, i, j, cf) < 0 {
+		return -1
+	}
+
+	if QuickSort2(data, j+1, k, cf) < 0 {
+		return -1
+	}
+
+	return 0
+}
+
+/*
+归并排序和快速排序的区别和联系
+1.联系
+原理都是基于分而治之，首先把待排序的数组分为两组，然后分别对两组排序，最后把两组结果合并起来
+原理都是基于分而治之，首选把待排序的数组分成两组，然后分别对两组排序，最后把两组结果合并起来
+
+2.区别
+进行分组的策略不同，合并的策略也不同。
+归并的分组策略：是假设待排序的元素存放在数组中，那么把数组前面的一半元素作为一组，后面一半作为另一组。
+快排的分组厕率：是根据元素的值来分的，大于某个值的元素一组，小于某个值的元素一组。
+快速排序在分组的时候已经根据元素的大小来分组了，而合并时，只需要把两个分组合并起来就可以了，归并排序则需要对两个有序的数组根据元素大小合并
+*/

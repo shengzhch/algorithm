@@ -74,3 +74,31 @@ func TestMgsort(t *testing.T) {
 	t.Log("after")
 	t.Log(data)
 }
+
+func TestQuickSort1(t *testing.T) {
+	var data = make([]interface{}, 0, 10)
+
+	for i := 0; i < 10; i++ {
+		data = append(data, rand.Intn(100))
+	}
+
+	t.Log("before")
+	t.Log(data)
+	QuickSort1(data, 0, len(data)-1, CfInt)
+	t.Log("after")
+	t.Log(data)
+}
+
+func TestQuickSort2(t *testing.T) {
+	var data = make([]interface{}, 0, 10)
+
+	for i := 0; i < 10; i++ {
+		data = append(data, rand.Intn(100))
+	}
+
+	t.Log("before")
+	t.Log(data)
+	QuickSort2(data, 0, len(data)-1, CfInt)
+	t.Log("after")
+	t.Log(data)
+}
