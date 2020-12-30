@@ -1,16 +1,11 @@
 package basic
 
 import (
-	"math/rand"
 	"testing"
 )
 
 func TestInsertSort(t *testing.T) {
-	var data = make([]interface{}, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(10))
-	}
+	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
 
 	t.Log("before")
 	t.Log(data)
@@ -20,11 +15,7 @@ func TestInsertSort(t *testing.T) {
 }
 
 func TestBuddleSort(t *testing.T) {
-	var data = make([]interface{}, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(10))
-	}
+	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
 
 	t.Log("before")
 	t.Log(data)
@@ -34,11 +25,7 @@ func TestBuddleSort(t *testing.T) {
 }
 
 func TestCountSort(t *testing.T) {
-	var data = make([]int, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, i)
-	}
+	data := []int{1, 6, 4, 3, 5, 2}
 
 	t.Log("before")
 	t.Log(data)
@@ -48,25 +35,17 @@ func TestCountSort(t *testing.T) {
 }
 
 func TestRadixSort(t *testing.T) {
-	var data = make([]int, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(1000))
-	}
+	data := []int{1, 6, 4, 18, 3, 5, 2, 21, 2}
 
 	t.Log("before")
 	t.Log(data)
-	RadixSort(data, 10, 3, 10)
+	RadixSort(data, len(data), 2, 10)
 	t.Log("after")
 	t.Log(data)
 }
 
 func TestMgsort(t *testing.T) {
-	var data = make([]interface{}, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(100))
-	}
+	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
 
 	t.Log("before")
 	t.Log(data)
@@ -76,11 +55,7 @@ func TestMgsort(t *testing.T) {
 }
 
 func TestQuickSort1(t *testing.T) {
-	var data = make([]interface{}, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(100))
-	}
+	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
 
 	t.Log("before")
 	t.Log(data)
@@ -90,11 +65,7 @@ func TestQuickSort1(t *testing.T) {
 }
 
 func TestQuickSort2(t *testing.T) {
-	var data = make([]interface{}, 0, 10)
-
-	for i := 0; i < 10; i++ {
-		data = append(data, rand.Intn(100))
-	}
+	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
 
 	t.Log("before")
 	t.Log(data)

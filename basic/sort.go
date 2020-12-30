@@ -30,7 +30,7 @@ func BuddleSort(data []interface{}, cf CF) {
 	size := len(data)
 	for i := 0; i < size-1; i++ {
 		finish := true
-		//最大的放到了最后
+		//最大的放到了最后,最后面的i个是之前排好序的
 		for j := 0; j < size-1-i; j++ {
 			if cf(data[j], data[j+1]) > 0 {
 				data[j], data[j+1] = data[j+1], data[j]
@@ -50,30 +50,26 @@ func CountSort(data []int, min, max int) {
 	var count = make([]int, max-min+1) //取值范围区间
 	var tmp = make([]int, size)
 
-	var i, j int
-	//min-max 映射到 0 max-min
-	for i = 0; i <= max-min; i++ {
-		count[i] = 0
-	}
-
-	//偏移量是元素对比最小值计算
-
 	//记录了每个整数相对偏移量出现的次数，index代表偏移量，value代表出现的次数
-	for j = 0; j < size; j++ {
+	for j := 0; j < size; j++ {
 		offset := data[j] - min
-		count[offset] = count[offset] + 1
+		count[offset] ++
 	}
 
 	//每个位置加上前一位置的偏移量出现的次数,index代表偏移量，value代表出现的该偏移量在新数组中的位置
-	for i = 1; i <= max-min; i++ {
-		count[i] = count[i] + count[i-1]
+	for i := 0; i <= max-min; i++ {
+		if i == 0 {
+			//index从0开始
+			count[i] = count[i] - 1
+		} else {
+			count[i] = count[i] + count[i-1]
+		}
 	}
 
-	for j = 0; j < size; j++ {
-		//-1 是因为下标从0开始
-		index := count[data[j]-min] - 1
-		tmp[index] = data[j]
-		count[data[j]-min] = count[data[j]-min] - 1
+	for j := size - 1; j >= 0; j-- {
+		offset := data[j] - min
+		tmp[count[offset]] = data[j]
+		count[offset]  --
 	}
 
 	copy(data[:], tmp[:])
@@ -106,19 +102,23 @@ func RadixSort(data []int, size, p, k int) {
 		for j = 0; j < size; j++ {
 			//
 			index = (data[j] / pval) % k
-			count[index] = count[index] + 1
+			count[index] ++
 		}
 
 		//偏移量
-		for i = 1; i < k; i++ {
-			count[i] = count[i] + count[i-1]
+		for i = 0; i < k; i++ {
+			if i == 0 {
+				count[i] = count[i] - 1
+			} else {
+				count[i] = count[i] + count[i-1]
+			}
 		}
 
-		//先出现的index应该最小，所以从最大处开始赋值
+		//先出现的index应该最小，所以从最大处开始赋值，保证稳定
 		for j = size - 1; j >= 0; j-- {
-			index = count[(data[j]/pval)%k] - 1
-			tmp[index] = data[j]
-			count[(data[j]/pval)%k] = count[(data[j]/pval)%k] - 1
+			index = (data[j] / pval) % k
+			tmp[count[index]] = data[j]
+			count[index] --
 		}
 
 		copy(data[:], tmp[:])
@@ -127,18 +127,18 @@ func RadixSort(data []int, size, p, k int) {
 
 //归并排序 稳定
 
-//合并到一起，j是分割的位置 i是开始位置，k是结束位置
+//合并到一起，j是分割的位置 i是开始位置，k是结束位置 (数组下标)
 func merge(data []interface{}, i, j, k int, cf CF) int {
 	var m = make([]interface{}, k-i+1)
 	ipos := i
 	jpos := j + 1
 	mpos := 0
 
-	for (ipos <= j || jpos <= k) {
+	for ipos <= j || jpos <= k {
 		//处理两组数据剩余的部分,肯定只有一组剩余
-		if (ipos > j) {
+		if ipos > j {
 			//把所有剩余的元素填充到m中
-			for (jpos <= k) {
+			for jpos <= k {
 				m[mpos] = data[jpos]
 				jpos++
 				mpos++
@@ -146,8 +146,8 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 
 			continue
 
-		} else if (jpos > k) {
-			for (ipos <= j) {
+		} else if jpos > k {
+			for ipos <= j {
 				m[mpos] = data[ipos]
 				ipos++
 				mpos++
@@ -156,7 +156,7 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 		}
 
 		//分别从两组的数据头开始，按顺序放入到m中
-		if (cf(data[ipos], data[jpos]) < 0) {
+		if cf(data[ipos], data[jpos]) < 0 {
 			m[mpos] = data[ipos]
 			ipos++
 			mpos++
@@ -174,7 +174,7 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 //i为0 k为size-1
 func MgSort(data []interface{}, i, k int, cf CF) int {
 	var j int
-	if (i < k) {
+	if i < k {
 		j = (i + k - 1) / 2 //j处于中间位置
 
 		//处理左
@@ -226,32 +226,34 @@ func Partition(data []interface{}, i, k int, cf CF) int {
 	//应该也可以随机取一个值，这样取值的目的是保证绝对随机。
 	pval = data[r[1].(int)] //取中位数的方法取出一个值作为哨兵
 
+	//不稳定，交换时不能保证交换到前面的值时第一个出现的值
 	for {
 		//从右端开始向左搜索找到第一个小于或者等于哨兵的值
-		for (cf(data[k], pval) > 0) {
+		for cf(data[k], pval) > 0 {
 			k--
 		}
 
 		//从左端开始向右搜索找到第一个大于或者等于哨兵的值
-		for (cf(data[i], pval) < 0) {
+		for cf(data[i], pval) < 0 {
 			i++
 		}
 
 		//
-		if (i >= k) {
+		if i >= k {
 			//则说明哨兵已经把数组分成大值和小值两组，
 			break
 		} else {
-			//肯定是data[i]大
-			if (cf(data[i], data[k]) != 0) {
+			//肯定是data[i]大于等于data[k])
+			if cf(data[i], data[k]) != 0 {
 				data[i], data[k] = data[k], data[i]
 			} else {
 				//防止陷入死循环
 				del := k - i
 				if del == 1 {
-					//紧挨着
+					//紧挨着，说明可以跳出循环
 					return i
 				} else {
+					//更换值
 					pval = data[i+1]
 				}
 			}
@@ -263,7 +265,7 @@ func Partition(data []interface{}, i, k int, cf CF) int {
 //成功返回0，失败返回-1；分区方法调用，确定左边递归调用，右边一直确定新的哨兵，直到i的值移到最后
 func QuickSort1(data []interface{}, i, k int, cf CF) int {
 	var j int
-	for (i < k) {
+	for i < k {
 		if j = Partition(data, i, k, cf); j < 0 {
 			return -1
 		}
@@ -298,7 +300,6 @@ func QuickSort2(data []interface{}, i, k int, cf CF) int {
 归并排序和快速排序的区别和联系
 1.联系
 原理都是基于分而治之，首先把待排序的数组分为两组，然后分别对两组排序，最后把两组结果合并起来
-原理都是基于分而治之，首选把待排序的数组分成两组，然后分别对两组排序，最后把两组结果合并起来
 
 2.区别
 进行分组的策略不同，合并的策略也不同。

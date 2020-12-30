@@ -27,7 +27,7 @@ h(k,i) = (h'(k)+ih"(k)) mod m
 */
 
 var (
-	vacated interface{} = "" //表示删除后腾出的空间 c语言中为一个指针，删除后不释放内存，减少内存分配
+	vacated interface{} = struct{}{} //表示删除后腾出的空间 c语言中为一个指针，删除后不释放内存，减少内存分配
 )
 
 //开地址哈希表 维护一个数组 用双散列法实现
@@ -37,16 +37,17 @@ type Ohtable struct {
 	size      int
 	table     []interface{}
 
-	h1 func(key interface{}) int
-	h2 func(key interface{}) int
+	//双散列
+	h1 Hash
+	h2 Hash
 
 	//
 	match func(key1, key2 interface{}) bool
 }
 
 //初始化
-func (l *Ohtable) Init(p int, h1, h2 func(key interface{}) int, match func(key1, key2 interface{}) bool) {
-	l.table = make([]interface{}, 0, p)
+func (l *Ohtable) Init(p int, h1, h2 Hash, match Match) {
+	l.table = make([]interface{}, p, p)
 	l.positions = p
 	l.size = 0
 	l.h1 = h1
@@ -75,9 +76,11 @@ func (l *Ohtable) LookUp(data interface{}) bool {
 //插入  -1 插入失败，1为已存在，0 为插入成功
 func (l *Ohtable) Insert(data interface{}) int {
 	var p, i int
+	//满了
 	if l.size == l.positions {
 		return -1
 	}
+	//元素已存在
 	if l.LookUp(data) {
 		return 1
 	}
@@ -104,7 +107,7 @@ func (l *Ohtable) Remove(data interface{}) int {
 		if l.table[p] == nil {
 			return -1
 		} else if l.table[p] == *l.vacated {
-			continue
+			return -1
 		} else if l.match(l.table[p], data) {
 			l.table[p] = *l.vacated
 			l.size--

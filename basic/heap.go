@@ -1,8 +1,14 @@
 /*
-完全二叉树
-叶子结点只在最后两层，最后一层结点从左到有排列
+一棵深度为k且有 2^k-1 个结点的二叉树称为满二叉树
+
+如果对满二叉树的结点进行编号, 约定编号从根结点起, 自上而下, 自左而右。
+则深度为k的, 有n个结点的二叉树, 当且仅当其每一个结点都与深度为k的满二叉树中编号从1至n的结点一一对应时, 称之为完全二叉树。
+
+满二叉树是完全二叉树的特殊形态, 即如果一棵二叉树是满二叉树, 则它必定是完全二叉树
+
 堆
-子节点的值比父结点的值小（大），根结点是树中最大（小）的结点，称为最大（小）值堆。
+子节点的值比父结点的值小，根结点是树中最大的结点，称为最大值堆。
+堆
 用数组的方式存储数据，二叉树的层级遍历，左平衡树
 */
 
@@ -14,34 +20,26 @@ type Heap struct {
 	tree    []interface{}
 }
 
-func (h *Heap) Init(args ...interface{}) {
+func (h *Heap) Init(cf CF) {
 	h.size = 0
-	h.tree = *new([]interface{})
-	if len(args) == 1 {
-		h.compare = args[0].(func(key1, key2 interface{}) int)
-	}else{
-		panic("compare func should be assign")
-	}
+	h.tree = make([]interface{}, 0, 0)
+	h.compare = cf
 	return
 }
 
-//结点下标的位置关系
 var (
-	//
-	heap_parent = func(npos int) int {
+	heapParent = func(npos int) int {
 		return (npos - 1) / 2
 	}
 
-	heap_left = func(npos int) int {
+	heapLeft = func(npos int) int {
 		return (npos * 2) + 1
 	}
 
-	heap_right = func(npos int) int {
+	heapRight = func(npos int) int {
 		return (npos * 2) + 2
 	}
 )
-
-//按最大堆实现
 
 //插入 插入后保证堆的结构
 func (h *Heap) Insert(data interface{}) {
@@ -50,17 +48,18 @@ func (h *Heap) Insert(data interface{}) {
 	h.tree = append(h.tree, data)
 
 	ipos = h.size
-	ppos = heap_parent(ipos)
+	ppos = heapParent(ipos)
 
-	for (ipos > 0 && h.compare(h.tree[ppos], h.tree[ipos]) < 0) {
+	//一直查找父节点，不满足堆的性质，就交换位置
+	for ipos > 0 && h.compare(h.tree[ppos], h.tree[ipos]) < 0 {
 		h.tree[ppos], h.tree[ipos] = h.tree[ipos], h.tree[ppos]
 		ipos = ppos
-		ppos = heap_parent(ipos)
+		ppos = heapParent(ipos)
 	}
 	h.size++
 }
 
-//提取堆顶元素
+//提取堆顶元素，取出后调整数据，是其满足堆的性质
 func (h *Heap) Extract() interface{} {
 	if h.size == 0 {
 		return nil
@@ -81,7 +80,7 @@ func (h *Heap) Extract() interface{} {
 		return data
 	}
 
-	//最后一个元素保存到头结点的位置
+	//最后一个元素保存到头结点的位置，
 	h.tree[0] = save
 	mpos := 0
 	ipos := 0
@@ -90,9 +89,11 @@ func (h *Heap) Extract() interface{} {
 
 	//校正，调整后满足堆的属性
 	for {
-		lpos = heap_left(ipos)
-		rpos = heap_right(ipos)
+		lpos = heapLeft(ipos)
+		rpos = heapRight(ipos)
 
+		//比较变化节点的左右孩子节点，判断变化的节点是否满足堆的性质(变化节点比左右孩子节点的值大)，
+		//不满足，找到要调整的节点
 
 		//取头节点和左孩子中较大的一个
 		if lpos < h.size && h.compare(h.tree[lpos], h.tree[ipos]) > 0 {
@@ -100,13 +101,12 @@ func (h *Heap) Extract() interface{} {
 		} else {
 			mpos = ipos
 		}
-
 		//比较上边的较大的和右结点的大小
 		if rpos < h.size && h.compare(h.tree[rpos], h.tree[mpos]) > 0 {
 			mpos = rpos
 		}
 
-		if (mpos == ipos) {
+		if mpos == ipos {
 			//满足堆的性质，无需调整
 			break
 		} else {
@@ -134,4 +134,3 @@ func (h *Heap) Top() interface{} {
 func (h *Heap) Data() []interface{} {
 	return h.tree
 }
-

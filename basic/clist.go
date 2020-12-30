@@ -11,30 +11,28 @@ func NewClist(node *Node) CList {
 }
 
 //在ele后插入一个新的元素
-func (l *CList) InsertAfter(ele *Node, value interface{}) {
-	node := &Node{
-		data: value,
-	}
-
+func (l *CList) InsertAfter(ele *Node, newNode *Node) {
 	if l.len == 0 {
-		node.next = node
-		l.head = node
-		l.tail = node
+		newNode.next = newNode
+		l.head = newNode
+		l.tail = newNode
 	} else {
-		node.next = ele.next
-		ele.next = node
+		ele.next.pre = newNode
+		newNode.next = ele.next
+		newNode.pre = ele
+		ele.next = newNode
 	}
 
 	//重新设置tail
 	if ele == l.tail {
-		l.tail = node
+		l.tail = newNode
 	}
 
 	l.len++
 	return
 }
 
-//删除元素ele后的元素
+//在ele后删除一个新的元素
 func (l *CList) DeleteAfter(ele *Node) {
 	if l.len == 0 {
 		return
@@ -46,7 +44,9 @@ func (l *CList) DeleteAfter(ele *Node) {
 		l.tail = nil
 	} else {
 		next := ele.next
-		ele.next = ele.next.next
+		next.next.pre = ele
+		ele.next = next.next
+
 		//删除节点是头结点，头节点后移
 		if next == l.head {
 			l.head = next.next
@@ -55,7 +55,23 @@ func (l *CList) DeleteAfter(ele *Node) {
 		if next == l.tail {
 			l.tail = ele
 		}
+		next = nil
 	}
 	l.len--
 	return
+}
+
+//头节点
+func (s *CList) Head() *Node {
+	return s.head
+}
+
+//尾节点
+func (s *CList) Tail() *Node {
+	return s.tail
+}
+
+//遍历
+func (s *CList) Traverse(iv Invoke, args ...interface{}) {
+	(*List)(s).Traverse(iv, args...)
 }
