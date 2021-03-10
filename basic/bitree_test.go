@@ -144,6 +144,26 @@ func Test_BitreeBfsInsert(t *testing.T) {
 	l6.Traverse(PrintNode)
 }
 
+func Test_BitreeBfsInsert1(t *testing.T) {
+	bt := &BiTree{}
+	bt.Init(CfInt)
+	for i := 0; i < 3; i++ {
+		bt.BFSInsert(i)
+	}
+	bt2 := &BiTree{}
+	bt2.Init(CfInt)
+	for i := 3; i < 6; i++ {
+		bt2.BFSInsert(i)
+	}
+	t.Log("ok")
+
+	newBt, err := Merge(bt, bt2, -1)
+	checkErr(err, t)
+	l6 := new(List)
+	newBt.Root().BFS(l6)
+	l6.Traverse(PrintNode)
+}
+
 func checkErr(err error, t *testing.T) {
 	if err != nil {
 		panic(err)

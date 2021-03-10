@@ -196,7 +196,7 @@ func (node *BiTreeNode) Postorder(l *List) {
 //非递归遍历 (根结点和左孩子节点同时压栈和插入队列，走到头，然后从栈中取出一个节点，指向其右节点)
 //遇到一个结点，插入到链表中，然后压栈，然后遍历左子树，左子树遍历完了，出栈，指向右结点，继续做
 func (node *BiTreeNode) PreorderNo(l *List) {
-	s := NewStack(nil)
+	s := NewStack()
 	var tmp = new(BiTreeNode)
 
 	tmp = node
@@ -217,7 +217,7 @@ func (node *BiTreeNode) PreorderNo(l *List) {
 //非递归遍历 (根结点和左孩子节点压栈，走到头，出栈一个节点，该节点插入到队列中，指针指向其右节点)
 //遇到一个结点(根节点以及左子树节点)，压栈，一直找到左结点为空，出栈，插入，指向右结点，继续做
 func (node *BiTreeNode) InorderNo(l *List) {
-	s := NewStack(nil)
+	s := NewStack()
 	var tmp = new(BiTreeNode)
 
 	tmp = node
@@ -240,8 +240,8 @@ func (node *BiTreeNode) InorderNo(l *List) {
 //后序遍历 左孩子 右孩子 根 ，因为根是先取到的
 //两个栈来做辅助存储 依次把根结点 右儿子 左儿子压栈，出栈的顺序就是后序遍历，处理过程于前序遍历相仿
 func (node *BiTreeNode) PostorderNo(l *List) {
-	s1 := NewStack(nil)
-	s2 := NewStack(nil)
+	s1 := NewStack()
+	s2 := NewStack()
 
 	var tmp = new(BiTreeNode)
 
@@ -269,12 +269,11 @@ func (node *BiTreeNode) PostorderNo(l *List) {
 }
 
 func (node *BiTreeNode) PostorderNo2(l *List) {
-	s1 := NewStack(nil)
-	s2 := NewStack(nil)
+	s1 := NewStack()
+	s2 := NewStack()
 
 	var tmp = node
 	s1.Push(tmp)
-	//一路向右压栈
 	for s1.Size() > 0 {
 		tmp = s1.PopValue().(*BiTreeNode)
 		s2.Push(tmp)
@@ -408,21 +407,6 @@ func (node *BiTreeNode) DFS(l *List) {
 	}
 }
 
-//深度优先 实现是先序遍历
-func (node *BiTreeNode) DFSCircle(l *List) {
-	var tmp = new(BiTreeNode)
-	tmp = node
-	if tmp != nil {
-		l.InsertAsTail(NewNode(tmp.data))
-		if tmp.left != nil {
-			tmp.left.DFS(l)
-		}
-		if tmp.right != nil {
-			tmp.right.DFS(l)
-		}
-	}
-}
-
 //广度优先方式插入
 func (tree *BiTree) BFSInsert(v interface{}) {
 	if tree.root == nil {
@@ -430,7 +414,6 @@ func (tree *BiTree) BFSInsert(v interface{}) {
 		return
 	}
 
-	//
 	q := make([]*BiTreeNode, 0)
 	q = append(q, tree.root)
 	for len(q) > 0 {

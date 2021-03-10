@@ -5,15 +5,9 @@ package basic
 //用链表实现，head标示栈顶，进行入栈和出栈
 type Stack List
 
-func NewStack(node *Node) Stack {
+func NewStack() Stack {
 	l := new(List)
-	l.Init(node)
 	return Stack(*l)
-}
-
-//入栈 头插法
-func (s *Stack) Init() {
-	(*List)(s).Init(nil)
 }
 
 //入栈 头插法

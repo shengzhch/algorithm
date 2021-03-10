@@ -7,7 +7,8 @@ import (
 
 func Test_Stack(t *testing.T) {
 	println("-----")
-	s := NewStack(&Node{data: 1})
+	s := NewStack()
+	s.Push(1)
 	s.Push(2)
 	s.Push(3)
 	//3 2 1
