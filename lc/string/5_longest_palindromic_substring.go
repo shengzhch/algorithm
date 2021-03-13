@@ -123,6 +123,11 @@ func goodLongestPalindrome(s string) string {
 			maxLen = length
 			maxSubStr = str
 		}
+
+		//无须在往下判断了
+		if maxLen > 2*(len(s)-i) {
+			return maxSubStr
+		}
 	}
 	return maxSubStr
 }
