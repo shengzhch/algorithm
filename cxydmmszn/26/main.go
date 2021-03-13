@@ -39,8 +39,7 @@ func getMaxReclFromArray(arr [][]int) int {
 //在栈中找到第一个小于h[i]的位置，然后插入
 //k+1 ... j ... i-1
 func getMaxArea(h []int) int {
-	var s = new(basic.Stack)
-	s.Init()
+	var s = basic.NewStack()
 
 	var i int
 	var maxArea int

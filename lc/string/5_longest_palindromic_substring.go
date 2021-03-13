@@ -2,10 +2,49 @@ package main
 
 import "fmt"
 
+/*
+最长回文子串
+*/
 func main() {
 	fmt.Println(badLongestPalindrome("babad"))  // bab
 	fmt.Println(goodLongestPalindrome("babad")) // bab
 	fmt.Println(bestLongestPalindrome("babad")) // bab
+	fmt.Println(dpLongestPalindrome("babad"))   // bab
+}
+
+func dpLongestPalindrome(s string) string {
+	maxLen := 1
+	begin := 0
+
+	// dp[i][j] 表示 s[i, j] 是否是回文串
+	dp := make([][]bool, len(s))
+	for i := 0; i < len(s); i++ {
+		dp[i] = make([]bool, len(s))
+	}
+
+	for i := 0; i < len(s); i++ {
+		dp[i][i] = true // 对本身来说就是回文
+	}
+
+	for j := 1; j < len(s); j++ {
+		for i := 0; i < j; i++ {
+			if s[i] != s[j] { //i j 必须相等
+				dp[i][j] = false
+			} else {
+				if j-i < 3 {
+					dp[i][j] = true
+				} else {
+					dp[i][j] = dp[i+1][j-1]
+				}
+			}
+
+			if dp[i][j] && j-i+1 > maxLen {
+				maxLen = j - i + 1
+				begin = i
+			}
+		}
+	}
+	return s[begin : begin+maxLen]
 }
 
 //
@@ -73,12 +112,13 @@ func goodLongestPalindrome(s string) string {
 	var maxLen int
 	var maxSubStr string
 	for i := range runes {
-		length, str := spread(runes, i, i, maxLen) // aba
+		//两类情况 aba,以及abba
+		length, str := spread(runes, i, i, maxLen) // aba的情况
 		if length > maxLen {
 			maxLen = length
 			maxSubStr = str
 		}
-		length, str = spread(runes, i, i+1, maxLen) // abba
+		length, str = spread(runes, i, i+1, maxLen) // abba的情况。 abbba 可以转化为aba，以及abbbba可以转化为abba
 		if length > maxLen {
 			maxLen = length
 			maxSubStr = str
@@ -91,7 +131,7 @@ func goodLongestPalindrome(s string) string {
 func spread(runes []rune, l, r int, curMaxLen int) (length int, subStr string) {
 	length = curMaxLen
 	for ; l >= 0 && r <= len(runes)-1 && runes[l] == runes[r]; l, r = l-1, r+1 {
-		if r-l+1 >= length { // <= 是因为 OJ 认为 babad 的答案是 aba 而非 bab
+		if r-l+1 >= length {
 			length = r - l + 1
 			subStr = string(runes[l : r+1])
 		}

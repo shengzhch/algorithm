@@ -29,9 +29,7 @@ func ReverseStack(s *basic.Stack) {
 }
 
 func main() {
-
-	ms := &basic.Stack{}
-	ms.Init()
+	ms := basic.NewStack()
 
 	ms.Push(1)
 	ms.Push(2)
@@ -40,10 +38,10 @@ func main() {
 	ms.Push(5)
 
 	fmt.Println("before ------- ")
-	(*basic.List)(ms).Traverse(basic.PrintNode)
+	ms.Traverse(basic.PrintNode)
 
-	ReverseStack(ms)
+	ReverseStack(&ms)
 	fmt.Println("after ------- ")
 
-	(*basic.List)(ms).Traverse(basic.PrintNode)
+	ms.Traverse(basic.PrintNode)
 }

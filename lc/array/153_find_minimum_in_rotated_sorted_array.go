@@ -2,13 +2,17 @@ package main
 
 import "fmt"
 
+//寻找旋转排序数组中的最小值,旋转的意思是某个位置之后的元素全部放到数组头部
+
+//思路 目标值的位置一定在无序的部分
+
+
+
 func main() {
 	// 在数组中查找原本 3 该在的位置，即是发生旋转的值（最小值）
-	fmt.Println(findMin([]int{3, 4, 5, 1, 2}))
+	fmt.Println(findMin([]int{4, 5, 1, 2, 3}))
 }
 
-// 排序就能直接搞定，不过扩展的二分思路更有技巧
-// 对二分查找顺序、查找完毕时的 l, r 变量的理解一定要深刻
 func findMin(nums []int) int {
 	n := len(nums)
 	if n <= 1 {
@@ -19,6 +23,7 @@ func findMin(nums []int) int {
 	if nums[n-1] > nums[0] {
 		return nums[0]
 	}
+
 
 	target := nums[0]
 	l, r := 0, n-1

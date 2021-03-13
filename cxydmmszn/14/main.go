@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"algorithm/basic"
+	"fmt"
 )
 
 func Hanoi(num int, left, mid, right string) int {

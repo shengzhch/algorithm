@@ -6,12 +6,12 @@ import (
 )
 
 func main() {
-	fmt.Println(isPalindrome("0P"))
+	fmt.Println(isPalindrome1("0P"))
 }
 
 // 辣鸡解法
 // TODO: 优化效率
-func isPalindrome(s string) bool {
+func isPalindrome1(s string) bool {
 	s = strings.ToLower(s)
 	str := ""
 	for _, r := range s {

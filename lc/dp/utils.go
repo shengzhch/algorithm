@@ -13,6 +13,19 @@ func max(vs ...int) int {
 	return m
 }
 
+func min(vs ...int) int {
+	if len(vs) == 0 {
+		panic("func min args empty")
+	}
+	m := vs[0]
+	for _, n := range vs[1:] {
+		if n < m {
+			m = n
+		}
+	}
+	return m
+}
+
 func maxDG(vs []int) int {
 	if len(vs) == 1 {
 		return vs[0]

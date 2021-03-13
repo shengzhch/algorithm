@@ -42,6 +42,28 @@ func getMaxArrfromArr(arr []interface{}, w int, cf basic.CF) []interface{} {
 	}
 
 	return res
+}
+
+func getMaxArray(arr []int, w int) []int {
+	rel := make([]int, 0, w)
+	res := make([]int, len(arr)-w+1, len(arr)-w+1)
+	var index int
+	for i := 0; i < len(arr); i++ {
+		for len(rel) > 0 && arr[len(rel)-1] <= arr[i] {
+			rel = rel[:len(rel)-1]
+		}
+		rel = append(rel, i)
+		if rel[0] == i-w {
+			rel = rel[1:]
+		}
+
+		//满足窗口条件了，开始往res中添加元素
+		if i >= w-1 {
+			res[index] = arr[rel[0]]
+			index++
+		}
+	}
+	return res
 
 }
 
@@ -49,4 +71,8 @@ func main() {
 	arr := []interface{}{4, 3, 5, 4, 3, 3, 6, 7}
 	rel := getMaxArrfromArr(arr, 3, basic.CfInt)
 	fmt.Println("rel ", rel)
+
+	arr2 := []int{4, 3, 5, 4, 3, 3, 6, 7}
+	rel2 := getMaxArray(arr2, 3)
+	fmt.Println("rel2 ", rel2)
 }

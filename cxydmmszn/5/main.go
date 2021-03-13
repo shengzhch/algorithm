@@ -10,11 +10,6 @@ type TwostackQueue struct {
 	spop  *basic.Stack
 }
 
-func (s *TwostackQueue) Init() {
-	s.spush.Init()
-	s.spop.Init()
-}
-
 func (s *TwostackQueue) Enqueue(data interface{}) {
 	s.spush.Push(data)
 }
@@ -46,11 +41,10 @@ func (s *TwostackQueue) Show() {
 }
 
 func main() {
-
 	ms := &TwostackQueue{
 		&basic.Stack{}, &basic.Stack{},
 	}
-	ms.Init()
+
 	ms.Enqueue(1)
 	ms.Enqueue(2)
 	ms.Enqueue(3)
