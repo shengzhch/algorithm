@@ -55,7 +55,7 @@ func TestMgsort(t *testing.T) {
 }
 
 func TestQuickSort1(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25,})
 
 	t.Log("before")
 	t.Log(data)
@@ -65,7 +65,7 @@ func TestQuickSort1(t *testing.T) {
 }
 
 func TestQuickSort2(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25,})
 
 	t.Log("before")
 	t.Log(data)
@@ -84,4 +84,12 @@ func TestShellSort(t *testing.T) {
 	ShellSort(data, l, CfInt)
 
 	t.Log("rel ", data)
+}
+
+func TestQuick(t *testing.T) {
+	arr := []int{
+		1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25,
+	}
+	QuickInt(arr)
+	t.Log("rel ", arr)
 }

@@ -99,7 +99,6 @@ func RadixSort(data []int, size, p, k int) {
 
 		//求基础
 		pval = int(math.Pow(float64(k), float64(n))) // k^0 k^1 ... k^n
-
 		for j = 0; j < size; j++ {
 			//
 			index = (data[j] / pval) % k
@@ -210,57 +209,25 @@ func randInt() int {
 }
 
 //i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
-func Partition(data []interface{}, i, k int, cf CF) int {
-	if i == k {
-		return i
+func Partition(data []interface{}, start, end int, cf CF) int {
+	if start >= end {
+		return start
 	}
-	var pval interface{}
 
-	var r = make([]interface{}, 3, 3)
+	pval := data[start]
+	p := start
 
-	r[0] = (randInt() % (k - i + 1)) + i
-	r[1] = (randInt() % (k - i + 1)) + i
-	r[2] = (randInt() % (k - i + 1)) + i
-
-	InsertSort(r, CfInt)
-
-	//应该也可以随机取一个值，这样取值的目的是保证绝对随机。
-	pval = data[r[1].(int)] //取中位数的方法取出一个值作为哨兵
-
-	//不稳定，交换时不能保证交换到前面的值时第一个出现的值
-	for {
-		//从右端开始向左搜索找到第一个小于或者等于哨兵的值
-		for cf(data[k], pval) > 0 {
-			k--
-		}
-
-		//从左端开始向右搜索找到第一个大于或者等于哨兵的值
-		for cf(data[i], pval) < 0 {
-			i++
-		}
-
-		//
-		if i >= k {
-			//则说明哨兵已经把数组分成大值和小值两组，
-			break
-		} else {
-			//肯定是data[i]大于等于data[k])
-			if cf(data[i], data[k]) != 0 {
-				data[i], data[k] = data[k], data[i]
-			} else {
-				//防止陷入死循环
-				del := k - i
-				if del == 1 {
-					//紧挨着，说明可以跳出循环
-					return i
-				} else {
-					//更换值
-					pval = data[i+1]
-				}
+	for i := start + 1; i <= end; i++ {
+		if cf(data[i], pval) < 0 { //=>data[i]<pva;
+			p++
+			if p != i {
+				data[p], data[i] = data[i], data[p]
 			}
 		}
 	}
-	return i
+	//start+1 ... p 都比pval小,data[p]是最后一个小于pval（data[start])的值
+	data[start], data[p] = data[p], data[start]
+	return p
 }
 
 //成功返回0，失败返回-1；分区方法调用，确定左边递归调用，右边一直确定新的哨兵，直到i的值移到最后
@@ -276,6 +243,7 @@ func QuickSort1(data []interface{}, i, k int, cf CF) int {
 		}
 		i = j + 1
 	}
+
 	return 0
 }
 
@@ -286,7 +254,7 @@ func QuickSort2(data []interface{}, i, k int, cf CF) int {
 	}
 	j := Partition(data, i, k, cf)
 
-	if QuickSort2(data, i, j, cf) < 0 {
+	if QuickSort2(data, i, j-1, cf) < 0 {
 		return -1
 	}
 
@@ -340,7 +308,6 @@ func ShellSort(data []interface{}, size int, cf CF) {
 		g = append(g, h)
 		h = 3*h + 1
 	}
-
 
 	for i := len(g) - 1; i >= 0; i-- {
 		insortwithg(data, size, g[i], cf)
