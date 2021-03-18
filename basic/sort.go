@@ -1,7 +1,6 @@
 package basic
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 )
@@ -130,8 +129,8 @@ func RadixSort(data []int, size, p, k int) {
 //合并到一起，j是分割的位置 i是开始位置，k是结束位置 (数组下标)
 func merge(data []interface{}, i, j, k int, cf CF) int {
 	var m = make([]interface{}, k-i+1)
-	ipos := i
-	jpos := j + 1
+	ipos := i     //从i开始
+	jpos := j + 1 //从j+1开始
 	mpos := 0
 
 	for ipos <= j || jpos <= k {
@@ -143,9 +142,7 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 				jpos++
 				mpos++
 			}
-
 			continue
-
 		} else if jpos > k {
 			for ipos <= j {
 				m[mpos] = data[ipos]
@@ -208,7 +205,6 @@ func randInt() int {
 	return rand.Intn(2147483647)
 }
 
-//i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
 func Partition(data []interface{}, start, end int, cf CF) int {
 	if start >= end {
 		return start
@@ -272,9 +268,11 @@ func QuickSort2(data []interface{}, i, k int, cf CF) int {
 
 2.区别
 进行分组的策略不同，合并的策略也不同。
+
 归并的分组策略：是假设待排序的元素存放在数组中，那么把数组前面的一半元素作为一组，后面一半作为另一组。
-快排的分组厕率：是根据元素的值来分的，大于某个值的元素一组，小于某个值的元素一组。
-快速排序在分组的时候已经根据元素的大小来分组了，而合并时，只需要把两个分组合并起来就可以了，归并排序则需要对两个有序的数组根据元素大小合并
+快排的分组策略：是根据元素的值来分的，大于某个值的元素一组，小于某个值的元素一组。
+快速排序在分组的时候已经根据元素的大小来分组了，而合并时，只需要把两个分组合并起来就可以了
+归并排序分组的两边各自是有序，但是整体是无须的，则需要对两个有序的数组根据元素大小合并
 */
 
 //希尔排序 多次插入插入排序 充分利用插入排序对处理整体有序的数据的优越性
@@ -300,7 +298,7 @@ func insortwithg(data []interface{}, size, g int, cf CF) int {
 
 func ShellSort(data []interface{}, size int, cf CF) {
 	var g = make([]int, 0)
-	//构造合适的g
+	//构造合适的g,若g=[]int{1},则退化成插入排序
 	for h := 1; ; {
 		if h > size {
 			break
@@ -311,6 +309,5 @@ func ShellSort(data []interface{}, size int, cf CF) {
 
 	for i := len(g) - 1; i >= 0; i-- {
 		insortwithg(data, size, g[i], cf)
-		fmt.Println(data)
 	}
 }

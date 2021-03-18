@@ -20,7 +20,7 @@ func maxArea1(height []int) int {
 	maxMulti := 0
 	for i := 0; i < n-1; i++ {
 		for j := i + 1; j < n; j++ {
-			w := j - i                     // 宽
+			w := j - i // 宽
 			//height[i]
 			h := min(height[i], height[j]) // 高
 			maxMulti = max(maxMulti, w*h)  // 比较面积

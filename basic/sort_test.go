@@ -5,7 +5,7 @@ import (
 )
 
 func TestInsertSort(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25})
 
 	t.Log("before")
 	t.Log(data)
@@ -15,7 +15,7 @@ func TestInsertSort(t *testing.T) {
 }
 
 func TestBuddleSort(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25})
 
 	t.Log("before")
 	t.Log(data)
@@ -25,17 +25,17 @@ func TestBuddleSort(t *testing.T) {
 }
 
 func TestCountSort(t *testing.T) {
-	data := []int{1, 6, 4, 3, 5, 2}
+	data := []int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25}
 
 	t.Log("before")
 	t.Log(data)
-	CountSort(data, 0, 10)
+	CountSort(data, 0, 50)
 	t.Log("after")
 	t.Log(data)
 }
 
 func TestRadixSort(t *testing.T) {
-	data := []int{1, 6, 4, 18, 3, 5, 2, 21, 2}
+	data := []int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25}
 
 	t.Log("before")
 	t.Log(data)
@@ -45,7 +45,7 @@ func TestRadixSort(t *testing.T) {
 }
 
 func TestMgsort(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 6, 4, 3, 5, 2})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25})
 
 	t.Log("before")
 	t.Log(data)
@@ -55,7 +55,7 @@ func TestMgsort(t *testing.T) {
 }
 
 func TestQuickSort1(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25,})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25})
 
 	t.Log("before")
 	t.Log(data)
@@ -65,7 +65,7 @@ func TestQuickSort1(t *testing.T) {
 }
 
 func TestQuickSort2(t *testing.T) {
-	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25,})
+	data := ToInterfaceSlice([]int{1, 5, 7, 36, 8, 3, 2, 4, 6, 8, 5, 0, 4, 11, 45, 25})
 
 	t.Log("before")
 	t.Log(data)
