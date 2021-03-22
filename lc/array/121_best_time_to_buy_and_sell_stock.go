@@ -22,7 +22,6 @@ func maxProfit(prices []int) int {
 	return max
 }
 
-
 // 记录当前股票的最低点
 func maxProfit12(prices []int) int {
 	var minprice = prices[0]
@@ -37,7 +36,6 @@ func maxProfit12(prices []int) int {
 	return max
 }
 
-
 //动态规划
 //d[i][0]表示这一天不持有股票的收益
 //d[i][1]表示这一天持有股票的最大收益
@@ -47,8 +45,8 @@ func maxProfit13(prices []int) int {
 	rel[0][0] = 0
 	rel[0][1] = -prices[0]
 	for i := 1; i < len(prices); i++ {
-		rel[i][0]=max(rel[i-1][0],rel[i-1][1]+prices[i])
-		rel[i][1]=max(rel[i-1][1],-prices[i])
+		rel[i][0] = max(rel[i-1][0], rel[i-1][1]+prices[i])
+		rel[i][1] = max(rel[i-1][1], -prices[i])
 	}
 	return rel[len(prices)-1][0]
 }
