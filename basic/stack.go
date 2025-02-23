@@ -5,9 +5,14 @@ package basic
 //用链表实现，head标示栈顶，进行入栈和出栈
 type Stack List
 
+<<<<<<< HEAD
 func NewStack(node *Node) Stack {
 	l := new(List)
 	l.Init(node)
+=======
+func NewStack() Stack {
+	l := new(List)
+>>>>>>> origin/master
 	return Stack(*l)
 }
 

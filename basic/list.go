@@ -1,12 +1,27 @@
 package basic
 
+<<<<<<< HEAD
 //双向链表(可以用作单向链表)
+=======
+//双向链表(可以用作单向链表),降低操作的复杂度，这里将设置好头尾指针
+>>>>>>> origin/master
 type List struct {
 	len  int
 	head *Node
 	tail *Node
 }
 
+<<<<<<< HEAD
+=======
+func NewListWithData(args ...interface{}) *List {
+	l := new(List)
+	for _, v := range args {
+		l.InsertAsTail(NewNode(v))
+	}
+	return l
+}
+
+>>>>>>> origin/master
 func (l *List) Init(node *Node) {
 	if node == nil {
 		return
@@ -14,13 +29,23 @@ func (l *List) Init(node *Node) {
 	l.len = 1
 	l.head = node
 	l.tail = node
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 }
 
 func (l *List) Len() int {
 	return l.len
 }
 
+<<<<<<< HEAD
+=======
+func (l *List) IsEmpty() bool {
+	return l.len == 0
+}
+
+>>>>>>> origin/master
 func (l *List) Head() *Node {
 	return l.head
 }
@@ -62,11 +87,24 @@ func (l *List) InsertAsTail(node *Node) {
 	l.len++
 }
 
+<<<<<<< HEAD
 //在某个节点后插入一个节点，需要修改node，af原来的next的pre，以及af的next
 //要是af是tail，需要更新tail
 func (l *List) InsertAfter(af, node *Node) {
 	node.next = af.next
 	node.pre = node
+=======
+//在某个节点后插入一个节点，若af为nil，表示新节点作为头节点
+// 需要修改node,af.next的pre，以及af.next
+//要是af是tail，需要更新tail
+func (l *List) InsertAfter(af, node *Node) {
+	if af == nil {
+		l.InsertAsHead(node)
+		return
+	}
+	node.next = af.next
+	node.pre = af
+>>>>>>> origin/master
 	if af.next != nil {
 		af.next.pre = node
 	} else {
@@ -76,9 +114,20 @@ func (l *List) InsertAfter(af, node *Node) {
 	l.len++
 }
 
+<<<<<<< HEAD
 //节点前插入 需要修改node，bf原来的pre的next，以及bf的pre
 //bf要是头节点，需要更新头节点
 func (l *List) InsertBefore(bf, node *Node) {
+=======
+//节点前插入,若bf为nil,表示新节点作为尾节点
+//需要修改node，bf原来的pre的next，以及bf的pre
+//bf要是头节点，需要更新头节点
+func (l *List) InsertBefore(bf, node *Node) {
+	if bf == nil {
+		l.InsertAsTail(node)
+		return
+	}
+>>>>>>> origin/master
 	node.next = bf
 	node.pre = bf.pre
 	if bf.pre != nil {
@@ -127,8 +176,16 @@ func (l *List) DelNode(node *Node) {
 		l.DelTail()
 		return
 	}
+<<<<<<< HEAD
 	node.pre.next = node.next
 	node.next.pre = node.pre
+=======
+	//前一个节点的后继指向node后继
+	node.pre.next = node.next
+	//后一个节点的前驱指向node前驱
+	node.next.pre = node.pre
+
+>>>>>>> origin/master
 	node = nil
 	l.len--
 }
@@ -143,13 +200,19 @@ type Match func(key1, key2 interface{}) bool
 type Hash func(key interface{}) int
 
 func (l *List) Find(data interface{}, cf CF) *Node {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	for n := l.head; n != nil; n = n.next {
 		if cf(n.data, data) == 0 {
 			return n
 		}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	return nil
 }
 
@@ -183,6 +246,10 @@ func (l *List) Traverse(iv Invoke, args ...interface{}) {
 func (l *List) Reverse() {
 	//先反转头尾，尾节点作为头节点
 	l.head, l.tail = l.tail, l.head
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	//从原来的尾结点开始，依次修改每个节点的pre和next(调转)
 	//修改完后，n跳到原来尾结点的前一个节点（既修改的下一个节点）
 	for n := l.head; n != nil; n = n.next {
@@ -194,12 +261,140 @@ func (l *List) Reverse() {
 func (l *List) ReverseAsSingle() {
 	var pre *Node
 	var next *Node
+<<<<<<< HEAD
 	l.tail = l.head
+=======
+>>>>>>> origin/master
 	for n := l.head; n != nil; n = next {
 		next = n.next
 		n.next = pre
 		pre = n
 	}
 	//此时pre为原来的tail，重设为head
+<<<<<<< HEAD
 	l.head = pre
+=======
+	l.head, l.tail = l.tail, l.head
+}
+
+//范围反转，从from到to的发转 from从1开始
+func (l *List) ReversePart(from, to int) {
+	if from >= to || to > l.Len() {
+		//防止panic
+		return
+	}
+
+	cur := 0
+
+	//范围的前一个节点和后一个节点
+	var fPre, tPos *Node
+	node1 := l.Head()
+
+	for node1 != nil {
+		cur++
+		if cur == from-1 {
+			fPre = node1
+		}
+		if cur == to+1 {
+			tPos = node1
+			break
+		}
+		node1 = node1.Next()
+	}
+
+	//node1开始反转的第一个节点，node2是node1的下一个节点
+	if fPre == nil {
+		node1 = l.Head()
+	} else {
+		node1 = fPre.Next()
+	}
+	node2 := node1.Next()
+
+	//node1指向tPos
+	node1.SetNext(tPos)
+	//注意更新链表的尾部
+	if tPos == nil {
+		l.SetTail(node1)
+	} else {
+		tPos.SetPre(node1)
+	}
+
+	var next *Node
+	//范围内反转，从node2开始，直到node2等于tPos，此时node1是反转部分的最后一个节点
+	for node2 != tPos {
+		next = node2.Next()
+		//调整node1的pre以及node2的next
+		node2.SetNext(node1)
+		node1.SetPre(node2)
+		node1 = node2
+		node2 = next
+	}
+
+	//头节点不变，只需要调整fPre的next和node1的pre
+	if fPre != nil {
+		fPre.SetNext(node1)
+		node1.SetPre(fPre)
+		return
+	}
+
+	l.SetHead(node1)
+}
+
+//范围反转，从from到to的发转 from从1开始
+func (l *List) ReversePartAsSingle(from, to int) {
+	if from >= to || to > l.Len() {
+		//防止panic
+		return
+	}
+
+	cur := 0
+
+	//范围的前一个节点和后一个节点
+	var fPre, tPos *Node
+	node1 := l.Head()
+
+	for node1 != nil {
+		cur++
+		if cur == from-1 {
+			fPre = node1
+		}
+		if cur == to+1 {
+			tPos = node1
+			break
+		}
+		node1 = node1.Next()
+	}
+
+	//node1开始反转的第一个节点，node2是node1的下一个节点
+	if fPre == nil {
+		node1 = l.Head()
+	} else {
+		node1 = fPre.Next()
+	}
+	node2 := node1.Next()
+
+	//node1指向tPos
+	node1.SetNext(tPos)
+	//注意更新链表的尾部
+	if tPos == nil {
+		l.SetTail(node1)
+	}
+
+	var next *Node
+	//范围内反转，从node2开始，直到node2等于tPos，此时node1是反转部分的最后一个节点
+	for node2 != tPos {
+		next = node2.Next()
+		node2.SetNext(node1)
+		node1 = node2
+		node2 = next
+	}
+
+	//头节点不变，只需要调整fPre的next和node1的pre
+	if fPre != nil {
+		fPre.SetNext(node1)
+		return
+	}
+
+	l.SetHead(node1)
+>>>>>>> origin/master
 }

@@ -44,7 +44,11 @@ func Test_Bitree(t *testing.T) {
 	t.Log("size", bt.Size())                         //7
 
 	t.Log("删除左子树")
+<<<<<<< HEAD
 	bt.RemeveLeftChild(root)
+=======
+	bt.RemoveLeftChild(root)
+>>>>>>> origin/master
 
 	t.Log("root", bt.Root().Data())                  //0
 	t.Log("left", bt.Root().Left())                  //nil
@@ -100,12 +104,74 @@ func Test_Bitree(t *testing.T) {
 	bt.Root().PostorderNo(l33)
 	l33.Traverse(PrintNode)
 
+<<<<<<< HEAD
+=======
+	fmt.Println("后序非递归2")
+	//后序
+	l332 := new(List)
+	bt.Root().PostorderNo2(l332)
+	l332.Traverse(PrintNode)
+
+>>>>>>> origin/master
 	fmt.Println("层次")
 	//层次
 	l4 := new(List)
 	bt.Root().LevelorderNo(l4)
 	l4.Traverse(PrintNode)
 
+<<<<<<< HEAD
+=======
+	fmt.Println("广度优先")
+	//BFS
+	l5 := new(List)
+	bt.Root().BFS(l5)
+	l5.Traverse(PrintNode)
+
+	fmt.Println("深度优先")
+	//BFS
+	l6 := new(List)
+	bt.Root().DFS(l6)
+	l6.Traverse(PrintNode)
+}
+
+func Test_BitreeBfsInsert(t *testing.T) {
+	bt := &BiTree{}
+	bt.Init(CfInt)
+	for i := 0; i < 7; i++ {
+		bt.BFSInsert(i)
+	}
+	fmt.Println("广度优先")
+	//BFS
+	l5 := new(List)
+	bt.Root().BFS(l5)
+	l5.Traverse(PrintNode)
+
+	fmt.Println("深度优先")
+	//BFS
+	l6 := new(List)
+	bt.Root().DFS(l6)
+	l6.Traverse(PrintNode)
+}
+
+func Test_BitreeBfsInsert1(t *testing.T) {
+	bt := &BiTree{}
+	bt.Init(CfInt)
+	for i := 0; i < 3; i++ {
+		bt.BFSInsert(i)
+	}
+	bt2 := &BiTree{}
+	bt2.Init(CfInt)
+	for i := 3; i < 6; i++ {
+		bt2.BFSInsert(i)
+	}
+	t.Log("ok")
+
+	newBt, err := Merge(bt, bt2, -1)
+	checkErr(err, t)
+	l6 := new(List)
+	newBt.Root().BFS(l6)
+	l6.Traverse(PrintNode)
+>>>>>>> origin/master
 }
 
 func checkErr(err error, t *testing.T) {

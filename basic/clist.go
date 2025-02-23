@@ -3,6 +3,7 @@ package basic
 //循环链表
 type CList List
 
+<<<<<<< HEAD
 func NewClist(node *Node) CList {
 	l := new(List)
 	l.Init(node)
@@ -25,6 +26,24 @@ func (l *CList) InsertAfter(ele *Node, newNode *Node) {
 
 	//重新设置tail
 	if ele == l.tail {
+=======
+func NewClist() CList {
+	l := new(List)
+	return CList(*l)
+}
+
+func (l *CList) InsertAsTail(newNode *Node) {
+	if l.len == 0 {
+		newNode.next = newNode
+		newNode.next = newNode
+		l.head = newNode
+		l.tail = newNode
+	} else {
+		newNode.pre = l.tail
+		newNode.next = l.tail.next
+		l.tail.next.pre = newNode
+		l.tail.next = newNode
+>>>>>>> origin/master
 		l.tail = newNode
 	}
 
@@ -32,8 +51,13 @@ func (l *CList) InsertAfter(ele *Node, newNode *Node) {
 	return
 }
 
+<<<<<<< HEAD
 //在ele后删除一个新的元素
 func (l *CList) DeleteAfter(ele *Node) {
+=======
+// 删除
+func (l *CList) Delete(ele *Node) {
+>>>>>>> origin/master
 	if l.len == 0 {
 		return
 	}
@@ -43,6 +67,7 @@ func (l *CList) DeleteAfter(ele *Node) {
 		l.head = nil
 		l.tail = nil
 	} else {
+<<<<<<< HEAD
 		next := ele.next
 		next.next.pre = ele
 		ele.next = next.next
@@ -57,6 +82,21 @@ func (l *CList) DeleteAfter(ele *Node) {
 		}
 		next = nil
 	}
+=======
+		ele.next.pre = ele.pre
+		ele.pre.next = ele.next
+
+		//删除节点是头结点，头节点后移
+		if ele == l.head {
+			l.head = ele.next
+		}
+		//删除节点是尾节点，尾节点前移
+		if ele == l.tail {
+			l.tail = ele.pre
+		}
+	}
+	ele = nil
+>>>>>>> origin/master
 	l.len--
 	return
 }

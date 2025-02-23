@@ -98,7 +98,10 @@ func RadixSort(data []int, size, p, k int) {
 
 		//求基础
 		pval = int(math.Pow(float64(k), float64(n))) // k^0 k^1 ... k^n
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 		for j = 0; j < size; j++ {
 			//
 			index = (data[j] / pval) % k
@@ -130,8 +133,13 @@ func RadixSort(data []int, size, p, k int) {
 //合并到一起，j是分割的位置 i是开始位置，k是结束位置 (数组下标)
 func merge(data []interface{}, i, j, k int, cf CF) int {
 	var m = make([]interface{}, k-i+1)
+<<<<<<< HEAD
 	ipos := i
 	jpos := j + 1
+=======
+	ipos := i     //从i开始
+	jpos := j + 1 //从j+1开始
+>>>>>>> origin/master
 	mpos := 0
 
 	for ipos <= j || jpos <= k {
@@ -143,9 +151,13 @@ func merge(data []interface{}, i, j, k int, cf CF) int {
 				jpos++
 				mpos++
 			}
+<<<<<<< HEAD
 
 			continue
 
+=======
+			continue
+>>>>>>> origin/master
 		} else if jpos > k {
 			for ipos <= j {
 				m[mpos] = data[ipos]
@@ -208,6 +220,7 @@ func randInt() int {
 	return rand.Intn(2147483647)
 }
 
+<<<<<<< HEAD
 //i,k 初试值设置为 0 size-1 分区 原书给的算法有误，有可能陷入死循环,已调整
 func Partition(data []interface{}, i, k int, cf CF) int {
 	if i == k {
@@ -260,6 +273,27 @@ func Partition(data []interface{}, i, k int, cf CF) int {
 		}
 	}
 	return i
+=======
+func Partition(data []interface{}, start, end int, cf CF) int {
+	if start >= end {
+		return start
+	}
+
+	pval := data[start]
+	p := start
+
+	for i := start + 1; i <= end; i++ {
+		if cf(data[i], pval) < 0 { //=>data[i]<pva;
+			p++
+			if p != i {
+				data[p], data[i] = data[i], data[p]
+			}
+		}
+	}
+	//start+1 ... p 都比pval小,data[p]是最后一个小于pval（data[start])的值
+	data[start], data[p] = data[p], data[start]
+	return p
+>>>>>>> origin/master
 }
 
 //成功返回0，失败返回-1；分区方法调用，确定左边递归调用，右边一直确定新的哨兵，直到i的值移到最后
@@ -275,6 +309,10 @@ func QuickSort1(data []interface{}, i, k int, cf CF) int {
 		}
 		i = j + 1
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	return 0
 }
 
@@ -285,7 +323,11 @@ func QuickSort2(data []interface{}, i, k int, cf CF) int {
 	}
 	j := Partition(data, i, k, cf)
 
+<<<<<<< HEAD
 	if QuickSort2(data, i, j, cf) < 0 {
+=======
+	if QuickSort2(data, i, j-1, cf) < 0 {
+>>>>>>> origin/master
 		return -1
 	}
 
@@ -303,7 +345,53 @@ func QuickSort2(data []interface{}, i, k int, cf CF) int {
 
 2.区别
 进行分组的策略不同，合并的策略也不同。
+<<<<<<< HEAD
 归并的分组策略：是假设待排序的元素存放在数组中，那么把数组前面的一半元素作为一组，后面一半作为另一组。
 快排的分组厕率：是根据元素的值来分的，大于某个值的元素一组，小于某个值的元素一组。
 快速排序在分组的时候已经根据元素的大小来分组了，而合并时，只需要把两个分组合并起来就可以了，归并排序则需要对两个有序的数组根据元素大小合并
 */
+=======
+
+归并的分组策略：是假设待排序的元素存放在数组中，那么把数组前面的一半元素作为一组，后面一半作为另一组。
+快排的分组策略：是根据元素的值来分的，大于某个值的元素一组，小于某个值的元素一组。
+快速排序在分组的时候已经根据元素的大小来分组了，而合并时，只需要把两个分组合并起来就可以了
+归并排序分组的两边各自是有序，但是整体是无须的，则需要对两个有序的数组根据元素大小合并
+*/
+
+//希尔排序 多次插入插入排序 充分利用插入排序对处理整体有序的数据的优越性
+//g 最后一次为1 保底
+
+//间隔为g的数组有序
+func insortwithg(data []interface{}, size, g int, cf CF) int {
+	var i, j int
+	var key interface{}
+	for j = g; j < size; j++ {
+		key = data[j]
+
+		i = j - g
+
+		//一步一步把key移动到合适的位置，前面的数据是已经排好序的
+		for i >= 0 && cf(data[i], key) > 0 {
+			data[i+g], data[i] = data[i], data[i+g]
+			i -= g
+		}
+	}
+	return 0
+}
+
+func ShellSort(data []interface{}, size int, cf CF) {
+	var g = make([]int, 0)
+	//构造合适的g,若g=[]int{1},则退化成插入排序
+	for h := 1; ; {
+		if h > size {
+			break
+		}
+		g = append(g, h)
+		h = 3*h + 1
+	}
+
+	for i := len(g) - 1; i >= 0; i-- {
+		insortwithg(data, size, g[i], cf)
+	}
+}
+>>>>>>> origin/master

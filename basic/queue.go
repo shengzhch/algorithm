@@ -5,9 +5,14 @@ package basic
 //链表实现，头节点进行出队，尾节点进行入队
 type Queue List
 
+<<<<<<< HEAD
 func NewQueue(node *Node) Queue {
 	l := new(List)
 	l.Init(node)
+=======
+func NewQueue() Queue {
+	l := new(List)
+>>>>>>> origin/master
 	return Queue(*l)
 }
 
@@ -33,6 +38,7 @@ func (s *Queue) Size() int {
 	return s.len
 }
 
+<<<<<<< HEAD
 //返回对头
 func (s *Queue) Head() interface{} {
 	if s.head == nil {
@@ -49,6 +55,8 @@ func (s *Queue) Tail() interface{} {
 	return s.tail.Data()
 }
 
+=======
+>>>>>>> origin/master
 //是否为空
 func (s *Queue) IsEmpty() bool {
 	return s.len == 0

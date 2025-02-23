@@ -6,7 +6,11 @@ package basic
 (1)  某个节点的左子树中的所有节点的值都比这个节点的值小
 (2)  某个节点的右子树中的所有节点的值都比这个节点的值大
 
+<<<<<<< HEAD
 前驱结点 小于当前结点的最大结点。
+=======
+前驱结点 小于当前结点的最大结点。 node的左子树的最大结点
+>>>>>>> origin/master
 后继结点 大于当前结点的最小结点。 node的右子树的最小结点
 
 
@@ -114,7 +118,12 @@ func (bst *BiSearchTree) DeleteNode(node *TreeNode) {
 	if node == nil {
 		return
 	}
+<<<<<<< HEAD
 	if node.lchild == nil && node.rchild == nil {
+=======
+
+	if node.lchild == nil && node.rchild == nil { //没有子节点
+>>>>>>> origin/master
 		//如果要删除的节点没有孩子，直接删掉它就可以
 		if node == bst.root {
 			bst.root = nil
@@ -127,16 +136,28 @@ func (bst *BiSearchTree) DeleteNode(node *TreeNode) {
 			}
 		}
 		bst.size--
+<<<<<<< HEAD
 	} else if node.lchild != nil && node.rchild == nil {
+=======
+	} else if node.lchild != nil && node.rchild == nil { //只有左孩子,没有右孩子
+>>>>>>> origin/master
 		//要是删除的是根节点，让其孩子结点为根节点
 		if node == bst.root {
 			node.lchild.parent = nil
 			bst.root = node.lchild
 		} else {
+<<<<<<< HEAD
 			//如果要删除的节点只有左孩子或右孩子，让其父节点的孩子指针指向其孩子结点
 			//其孩子结点的父指针指向其父节点,
 			node.lchild.parent = node.parent
 			if node.parent.lchild == node {
+=======
+			//有父节点
+			//如果要删除的节点只有左孩子或右孩子，让其父节点的孩子指针指向其孩子结点（只有一个孩子）
+			//然后其孩子结点的父指针指向其父节点,
+			node.lchild.parent = node.parent
+			if node.parent.lchild == node { //删除节点作为其父节点的左孩子
+>>>>>>> origin/master
 				node.parent.lchild = node.lchild
 			} else {
 				node.parent.rchild = node.lchild
@@ -271,7 +292,19 @@ func (bst *BiSearchTree) GetMax() interface{} {
 	}
 }
 
+<<<<<<< HEAD
 // 小于当前结点的最大结点
+=======
+//中序遍历 左子树 根 右子树
+
+//小于当前结点的最大结点（下确界）
+//前驱节点：对一棵二叉树进行中序遍历，遍历后的顺序，当前节点的前一个节点为该节点的前驱节点；
+
+//大于当前结点的最小结点 （上确界）
+//后继节点：对一棵二叉树进行中序遍历，遍历后的顺序，当前节点的后一个节点为该节点的后继节点；
+
+//小于当前结点的最大结点
+>>>>>>> origin/master
 //前驱节点: 按小的方向找：找到可以替换node的节点，值替换到到node后，不影响二叉搜索树的结构
 func (bst *BiSearchTree) GetPredecessor(node *TreeNode) *TreeNode {
 	getMax := func(node *TreeNode) *TreeNode {
@@ -302,7 +335,11 @@ func (bst *BiSearchTree) GetPredecessor(node *TreeNode) *TreeNode {
 				}
 
 				if node == node.parent.rchild {
+<<<<<<< HEAD
 					//满足时node.parent为上确界，node.parent.left 均比node.parent 小
+=======
+					//满足时node.parent为下确界，node.parent.left 均比node.parent 小
+>>>>>>> origin/master
 					return node.parent
 				}
 				node = node.parent
@@ -313,7 +350,10 @@ func (bst *BiSearchTree) GetPredecessor(node *TreeNode) *TreeNode {
 	return nil
 }
 
+<<<<<<< HEAD
 //大于当前结点的最小结点
+=======
+>>>>>>> origin/master
 //后继节点：按大的的找：找到可以替换node的节点，值替换到到node后，不影响二叉搜索树的结构
 func (bst *BiSearchTree) GetSuccessor(node *TreeNode) *TreeNode {
 	//一直找到子节点中左节点不存在的节点
@@ -340,7 +380,11 @@ func (bst *BiSearchTree) GetSuccessor(node *TreeNode) *TreeNode {
 					break
 				}
 				if node == node.parent.lchild {
+<<<<<<< HEAD
 					//满足时node.parent为下确界，node.parent.right 均比node.parent 大
+=======
+					//满足时node.parent为上确界，node.parent.right 均比node.parent 大
+>>>>>>> origin/master
 					return node.parent
 				}
 				node = node.parent

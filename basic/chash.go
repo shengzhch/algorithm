@@ -27,7 +27,11 @@ h(k) = FLOOR(（k*A mod 1）* m )
 type Chtable struct {
 	buckets int
 	size    int
+<<<<<<< HEAD
 	table   []List
+=======
+	table   []List //槽位
+>>>>>>> origin/master
 
 	//f(key)%buckets 确定槽位 辅助哈希函数
 	f Hash

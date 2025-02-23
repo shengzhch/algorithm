@@ -10,6 +10,11 @@
 子节点的值比父结点的值小，根结点是树中最大的结点，称为最大值堆。
 堆
 用数组的方式存储数据，二叉树的层级遍历，左平衡树
+<<<<<<< HEAD
+=======
+
+本堆的实现是逻辑意义上的最大堆实现
+>>>>>>> origin/master
 */
 
 package basic
@@ -27,15 +32,29 @@ func (h *Heap) Init(cf CF) {
 	return
 }
 
+<<<<<<< HEAD
 var (
+=======
+//下标从0开始
+var (
+	//父节点下标
+>>>>>>> origin/master
 	heapParent = func(npos int) int {
 		return (npos - 1) / 2
 	}
 
+<<<<<<< HEAD
+=======
+	//左孩子
+>>>>>>> origin/master
 	heapLeft = func(npos int) int {
 		return (npos * 2) + 1
 	}
 
+<<<<<<< HEAD
+=======
+	//右孩子
+>>>>>>> origin/master
 	heapRight = func(npos int) int {
 		return (npos * 2) + 2
 	}
@@ -48,6 +67,10 @@ func (h *Heap) Insert(data interface{}) {
 	h.tree = append(h.tree, data)
 
 	ipos = h.size
+<<<<<<< HEAD
+=======
+	//当前节点的父节点
+>>>>>>> origin/master
 	ppos = heapParent(ipos)
 
 	//一直查找父节点，不满足堆的性质，就交换位置
@@ -107,10 +130,17 @@ func (h *Heap) Extract() interface{} {
 		}
 
 		if mpos == ipos {
+<<<<<<< HEAD
 			//满足堆的性质，无需调整
 			break
 		} else {
 			//调整位置，重新开始比较
+=======
+			//满足堆的性质,无需调整
+			break
+		} else {
+			//调整位置,重新开始比较
+>>>>>>> origin/master
 			h.tree[mpos], h.tree[ipos] = h.tree[ipos], h.tree[mpos]
 			ipos = mpos
 		}

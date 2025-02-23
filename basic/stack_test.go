@@ -7,7 +7,12 @@ import (
 
 func Test_Stack(t *testing.T) {
 	println("-----")
+<<<<<<< HEAD
 	s := NewStack(&Node{data: 1})
+=======
+	s := NewStack()
+	s.Push(1)
+>>>>>>> origin/master
 	s.Push(2)
 	s.Push(3)
 	//3 2 1

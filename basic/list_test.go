@@ -74,4 +74,17 @@ func Test_List(t *testing.T) {
 	fmt.Println(l.head == n1)
 	fmt.Println(l.tail == n4)
 	fmt.Println(l.len == 5)
+<<<<<<< HEAD
+=======
+
+	//1 1.5 2.5 3 4
+	fmt.Println("范围反转1 - 4")
+	l.ReversePart(2, 4)
+	l.Traverse(PrintNode)
+
+	//1 1.5 2.5 3 4
+	fmt.Println("范围反转1 - 4")
+	l.ReversePartAsSingle(2, 4)
+	l.Traverse(PrintNode)
+>>>>>>> origin/master
 }
